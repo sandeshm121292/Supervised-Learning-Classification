@@ -24,7 +24,7 @@ info <- function(CLASS.FREQ){
     if(freq.class[[i]] != 0){ # if the number of examples in class i is not 0
       ### calculate the entropy for class i and name it as "entropy". Hint: use "sum(freq.class)" to calculate the total number of examples
         pi <- freq.class[[i]] / sum(freq.class)
-        entropy <-  -( pi * log2(pi)) # 2 points Calculate pi,
+        entropy <-  -( pi * log2(pi)) # Calculate pi,
         }else{ 
       entropy <- 0 # if we face log(0), the entropy is given 0
     }
@@ -51,7 +51,7 @@ info.target <- function(ATTRIBUTE, CLASS){
     spl_entropy1 <- sum(freq[j,]) / sum(freq)
     spl_entropy <- spl_entropy1 * info(freq[j,])
     
-    info.target <- info.target +  spl_entropy  # 2 points 
+    info.target <- info.target +  spl_entropy  
   }
   return(info.target)
 }
@@ -80,12 +80,12 @@ gain <- function(ATTRIBUTE, CLASS){
       y <- table(CLASS)
       ## the code to calculate the information gain for this ATTRIBUTE, using the info and info.target function
             gain.num[i] <-  info(y) - info.target(small,CLASS)
-      # 2 points
+     
     }
     return(max(gain.num))
   }else{ # Categorical attributes
     ## the code to calculate the information gain for this ATTRIBUTE, using the info and info.target function 
-    gain.cat <- info(CLASS.FREQ) - info.target(ATTRIBUTE, CLASS) # 2 points
+    gain.cat <- info(CLASS.FREQ) - info.target(ATTRIBUTE, CLASS) 
     return(gain.cat)
   }  
 }
@@ -128,7 +128,7 @@ perceptron <- function(DATA, CLASS){
    while(TRUE){
     # use matrix product to calculate the hypothesis. Hint: make sure both parts are matrix 
 
-     hypothesis <- w %*% t(X.new) # 5 points
+     hypothesis <- w %*% t(X.new) 
    # print(hypothesis)
     label.new <- ifelse(hypothesis >= 0, 1, -1) # use the sign of hypothesis to decide the class label
     if(all(label.new==CLASS)){ # if the new class label from hypothesis is the same with the true class label, then stop the iteration
@@ -138,8 +138,8 @@ perceptron <- function(DATA, CLASS){
       where <- label.new == CLASS
       misclass <- sample(grep("FALSE", where), 1) # randomly select a misclassified point
       # update the weight vector using this randomly selected misclassified point
-     w <- w + y[misclass]*as.matrix(X.new[misclass,]) # 5 points
-    }   
+     w <- w + y[misclass]*as.matrix(X.new[misclass,]) 
+     }
   }  
 } 
 
@@ -169,7 +169,7 @@ print(data[data.train,]$workclass)
 library(tree)
 #build a decision tree called tree.data by using the tree() function on the training data
 #tree.data <- tree (class ~age+workclass+fnlwgt+education+education_num+marital_status+occupation+relationship+race+sex+capital_gain+capital_loss+hours_per_week+native_country+class, data[data.train,] ) # 3 points
-tree.data <- tree(class ~. , data [data.train, ]) # 3 points
+tree.data <- tree(class ~. , data [data.train, ]) 
 plot(tree.data)
 text(tree.data)
 
@@ -177,18 +177,18 @@ text(tree.data)
 library(e1071)
 #build a naive Bayes model called nb.data by using the naiveBayes() function on the training data
 
-nb.data <- naiveBayes(class ~ . ,data = data[data.train,]) # 3 points 
+nb.data <- naiveBayes(class ~ . ,data = data[data.train,]) 
 prediction <- predict(nb.data, data[-data.train, ], type="class") # predict the class labels for the test data
 print(prediction)
 res.nb <- table(prediction, data[-data.train, "class"]) # generate a confusion matrix using the predictions and the real labels of the test data
 print(res.nb)
 # calculate the accuracy, precision and recall by using the confusion matrix res.nb 5 points
-accuracy <- sum(diag(res.nb))/(sum(res.nb))  # 1 point 
+accuracy <- sum(diag(res.nb))/(sum(res.nb)) 
 print(accuracy)
 
 recall <-   res.nb[2,2] / sum(res.nb [2,] ) # Hit Recall
 print(recall)
-precision <- res.nb[2,2] / sum(res.nb [,2] ) # Miss precision  # 1 point 
+precision <- res.nb[2,2] / sum(res.nb [,2] ) # Miss precision 
 print(precision)
 
 # we can also only work with certain features, for example, here we select only the numeric features
@@ -197,12 +197,12 @@ data.select <- subset(data, select=c(age, fnlwgt, education_num, capital_gain, c
 
 ## Support Vector Machine 
 #build a support vector machine  called svm.data on data.select using the svm() function, where choose kernel radial and set cost to 1
-svm.data <- svm( class ~ . ,data = data.select[data.train,],  kernel = "radial" , cost = 1 ) # 3 points
+svm.data <- svm( class ~ . ,data = data.select[data.train,],  kernel = "radial" , cost = 1 ) 
 #generate predictions using the predict() function
-prediction <- predict(svm.data , data.select[-data.train,], type="class") # 1 point 
+prediction <- predict(svm.data , data.select[-data.train,], type="class")
 print(prediction)
 #generate the confusion matrix
-res.svm <- table(prediction, data.select[-data.train,"class"]) # 1 point 
+res.svm <- table(prediction, data.select[-data.train,"class"])
 print(res.svm)
 #calculate accuracy
 
@@ -214,16 +214,16 @@ print(accuracy.svm)
 library(randomForest)
 library(ROCR)
 #build a random forest model called rf.data on data.select using the randomForest() function, where number of trees is 100 and produce the variable importance
-rf.data <- randomForest(class~.,data = data.select[data.train,],  ntree= 100, importance = TRUE)  # 3 points 
+rf.data <- randomForest(class~.,data = data.select[data.train,],  ntree= 100, importance = TRUE)  
 #generate predictions using the predict() function
-prediction <- predict(rf.data , data.select[data.train,], type ="class") # 1 point 
+prediction <- predict(rf.data , data.select[data.train,], type ="class")
 #generate the confusion matrix
-res.rf <- table( prediction, data.select[-data.train,"class"] ) # 1 point 
+res.rf <- table( prediction, data.select[-data.train,"class"] )  
 #calculate accuracy
-accuracy.rf <- sum(diag(res.rf)) / sum(res.rf) # 1 point 
+accuracy.rf <- sum(diag(res.rf)) / sum(res.rf)  
 print(accuracy.rf)
 #generate the probabilities of each prediction, using the predict() function where the type should be "prob"
-probability <- predict(rf.data,data.select[-data.train,], type="prob") # 1 point 
+probability <- predict(rf.data,data.select[-data.train,], type="prob")
 # if we are interested in the class >50K, we can calculate its AUC score like this:
 auc.rf <- as.numeric(performance(prediction(probability[,2], data.select[-data.train, "class"]), measure='auc')@y.values) 
 auc.rf
