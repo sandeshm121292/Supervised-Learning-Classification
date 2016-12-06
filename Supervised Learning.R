@@ -1,7 +1,3 @@
-######################## DAMI Programming Assignment 3: Classification #########################
-
-# Submitted by Melkote Shivashankar sandesh 
-
 # Create a dataset
 # The "almost" same example from the lecture
 
